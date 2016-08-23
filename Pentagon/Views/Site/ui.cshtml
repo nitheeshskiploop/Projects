@@ -1,0 +1,46 @@
+﻿@using Pentagon.Models;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ui</title>
+</head>
+<body>
+
+    <fieldset>
+        <legend>Add New tutorial</legend>
+        <div>
+            Enter userid: <input type="text" id="userid" />
+        </div>
+        <div>
+            Enter tutorial name: <input type="text" id="tname" />
+        </div>
+        <div>
+            <button onclick="addTutorial()">Add Book</button>
+        </div>
+    </fieldset>
+
+
+</body>
+</html>
+<script src="~/jquery-3.1.0.min.js"></script>
+
+<script>
+    function addTutorial() {
+        var tutorial = {};
+        tutorial.UserID = $("#userid").val();
+        tutorial.TutorialTitle = $("#tname").val();
+
+        var requestInfo = {
+            url: "site/addnewcourse",
+            type: "POST",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(tutorial),
+            success: function (id) {
+                tutorial.TutorialID = id;
+                alert(id);
+            }
+        };
+        $.ajax(requestInfo);
+    }
+</script>

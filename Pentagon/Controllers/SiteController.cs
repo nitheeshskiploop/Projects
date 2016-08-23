@@ -14,7 +14,8 @@ namespace Pentagon.Controllers
     {
         [Route("")]
         [Route("site")]
-
+        [Route("site/login")]
+        [HttpGet]
         public ActionResult Login(string username, string password)
         {
             Login login = new Login();
@@ -46,6 +47,8 @@ namespace Pentagon.Controllers
         }
 
         [Route("site/listofcourses")]
+        [HttpGet]
+ 
         public ActionResult ListOfCourses(int userid)
         {
             List<Tutorials> tutorial = new List<Tutorials>();
@@ -84,6 +87,7 @@ namespace Pentagon.Controllers
         }
 
         [Route("site/listofchapters")]
+        [HttpGet]
         public ActionResult ListOfChapter(int tutorialid)
         {
             Dictionary<int, string> chapters = new Dictionary<int, string>();
@@ -119,6 +123,7 @@ namespace Pentagon.Controllers
 
 
         [Route("site/contentofchapter")]
+        [HttpGet]
         public ActionResult ContentOfChapter(int chapterid)
         {
             List<Chapters> chapters = new List<Chapters>();
@@ -160,7 +165,8 @@ namespace Pentagon.Controllers
 
 
         [Route("site/addnewchapter")]
-        public async Task<ActionResult> AddNewChapter(Chapters chapter)
+        [HttpGet]
+        public ActionResult AddNewChapter(Chapters chapter)
         {
             string constring = ConfigurationManager.ConnectionStrings["TutorialsContext"].ConnectionString;
             using (SqlConnection con = new SqlConnection(constring))
@@ -182,7 +188,8 @@ namespace Pentagon.Controllers
         }
 
         [Route("site/addnewcourse")]
-        public async Task<ActionResult> AddNewCourse(Tutorials tutorial)
+        [HttpGet]
+        public ActionResult AddNewCourse(Tutorials tutorial)
         {
             string constring = ConfigurationManager.ConnectionStrings["TutorialsContext"].ConnectionString;
             using (SqlConnection con = new SqlConnection(constring))
