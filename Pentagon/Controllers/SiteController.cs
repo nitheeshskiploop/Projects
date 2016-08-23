@@ -206,8 +206,3 @@ namespace Pentagon.Controllers
         }
     }
 }
-
-
-
-///this is git hub comment
-///
