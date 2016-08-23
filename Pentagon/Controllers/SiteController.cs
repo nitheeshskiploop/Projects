@@ -12,8 +12,7 @@ namespace Pentagon.Controllers
 {
     public class SiteController : Controller
     {
-        // GET: Site
-        [Route("")] // http://domainname/
+        [Route("")]
         [Route("site")]
 
         public ActionResult Login(string username, string password)
@@ -195,7 +194,14 @@ namespace Pentagon.Controllers
                 command.Parameters.AddWithValue("@tt", tutorial.TutorialTitle);
                 con.Open();
                 int id = (int)command.ExecuteScalar();
-                return Json(id, JsonRequestBehavior.AllowGet);
+                if (id == 0)
+                {
+                    return Json(false, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
             }
         }
     }
