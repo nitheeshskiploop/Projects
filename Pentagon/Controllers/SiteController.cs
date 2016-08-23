@@ -200,7 +200,7 @@ namespace Pentagon.Controllers
                 }
                 else
                 {
-                    return Json(true, JsonRequestBehavior.AllowGet);
+                    return Json(id, JsonRequestBehavior.AllowGet);
                 }
             }
         }
