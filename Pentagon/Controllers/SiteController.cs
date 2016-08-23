@@ -159,8 +159,8 @@ namespace Pentagon.Controllers
         }
 
 
-        [Route("site/edit")]
-        public async Task<ActionResult> Edit(Chapters chapter)
+        [Route("site/addnewchapter")]
+        public async Task<ActionResult> AddNewChapter(Chapters chapter)
         {
             string constring = ConfigurationManager.ConnectionStrings["TutorialsContext"].ConnectionString;
             using (SqlConnection con = new SqlConnection(constring))
