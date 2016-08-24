@@ -48,7 +48,7 @@ namespace Pentagon.Controllers
 
         [Route("site/listofcourses")]
         [HttpGet]
- 
+
         public ActionResult ListOfCourses(int userid)
         {
             List<Tutorials> tutorial = new List<Tutorials>();
@@ -67,23 +67,19 @@ namespace Pentagon.Controllers
                 {
                     return Json("null", JsonRequestBehavior.AllowGet);
                 }
-                else
+                while (reader.Read())
                 {
-                    while (reader.Read())
+
+                    Tutorials t = new Tutorials()
                     {
-
-                        Tutorials t = new Tutorials()
-                        {
-                            UserID = (int)reader["UserID"],
-                            TutorialID = (int)reader["TutorialID"],
-                            TutorialTitle = (string)reader["TutorialTitle"]
-                        };
-                        tutorial.Add(t);
-                    }
-                    return Json(tutorial, JsonRequestBehavior.AllowGet);
+                        UserID = (int)reader["UserID"],
+                        TutorialID = (int)reader["TutorialID"],
+                        TutorialTitle = (string)reader["TutorialTitle"]
+                    };
+                    tutorial.Add(t);
                 }
+                return Json(tutorial, JsonRequestBehavior.AllowGet);
             }
-
         }
 
         [Route("site/listofchapters")]
@@ -106,17 +102,14 @@ namespace Pentagon.Controllers
                 {
                     return Json("null", JsonRequestBehavior.AllowGet);
                 }
-                else
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        int chapterID = (int)reader["ChapterID"];
-                        string chapterName = (string)reader["ChapterName"];
-                        chapters.Add(chapterID, chapterName);
+                    int chapterID = (int)reader["ChapterID"];
+                    string chapterName = (string)reader["ChapterName"];
+                    chapters.Add(chapterID, chapterName);
 
-                    }
-                    return Json(chapters, JsonRequestBehavior.AllowGet);
                 }
+                return Json(chapters, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -142,24 +135,21 @@ namespace Pentagon.Controllers
                 {
                     return Json("null", JsonRequestBehavior.AllowGet);
                 }
-                else
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
 
-                        Chapters c = new Chapters()
-                        {
-                            ChapterID = (int)reader["ChapterID"],
-                            HierarchyLevel = (int)reader["HierarchyLevel"],
-                            ChapterName = (string)reader["ChapterName"],
-                            Description = (string)reader["Description"],
-                            TypeOfFile = (int)reader["TypeOfFile"],
-                            FileContents = (string)reader["FileContents"],
-                        };
-                        chapters.Add(c);
-                    }
-                    return Json(chapters, JsonRequestBehavior.AllowGet);
+                    Chapters c = new Chapters()
+                    {
+                        ChapterID = (int)reader["ChapterID"],
+                        HierarchyLevel = (int)reader["HierarchyLevel"],
+                        ChapterName = (string)reader["ChapterName"],
+                        Description = (string)reader["Description"],
+                        TypeOfFile = (int)reader["TypeOfFile"],
+                        FileContents = (string)reader["FileContents"],
+                    };
+                    chapters.Add(c);
                 }
+                return Json(chapters, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -174,12 +164,12 @@ namespace Pentagon.Controllers
                 SqlCommand command = new SqlCommand();
                 command.CommandText = "insert into Chapters values(@ti,@hl,@cn,@d,@tf,@fc);select CAST(scope_identity() as int)";
                 command.Connection = con;
-                command.Parameters.AddWithValue("@cn",chapter.ChapterName);
-                command.Parameters.AddWithValue("@hl",chapter.HierarchyLevel);
-                command.Parameters.AddWithValue("@ti",chapter.TutorialID);
-                command.Parameters.AddWithValue("@d",chapter.Description);
-                command.Parameters.AddWithValue("@tf",chapter.TypeOfFile);
-                command.Parameters.AddWithValue("@fc",chapter.FileContents);
+                command.Parameters.AddWithValue("@cn", chapter.ChapterName);
+                command.Parameters.AddWithValue("@hl", chapter.HierarchyLevel);
+                command.Parameters.AddWithValue("@ti", chapter.TutorialID);
+                command.Parameters.AddWithValue("@d", chapter.Description);
+                command.Parameters.AddWithValue("@tf", chapter.TypeOfFile);
+                command.Parameters.AddWithValue("@fc", chapter.FileContents);
                 con.Open();
                 int id = (int)command.ExecuteScalar();
                 return Json(id, JsonRequestBehavior.AllowGet);
