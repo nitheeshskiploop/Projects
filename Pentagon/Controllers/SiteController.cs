@@ -36,11 +36,19 @@ namespace Pentagon.Controllers
 
                 if (reader.Read() == false)
                 {
+                    if (command != null)
+                        command.Dispose();
+                    if (command != null)
+                        con.Dispose();
                     return View("Login", null);
                 }
                 else
                 {
                     login.UserID = (int)reader["UserID"];
+                    if (command != null)
+                        command.Dispose();
+                    if (command != null)
+                        con.Dispose();
                     return View("Login", login);
                 }
             }
@@ -51,7 +59,7 @@ namespace Pentagon.Controllers
 
         public ActionResult ListOfCourses(int userid)
         {
-            List<Tutorials> tutorial = new List<Tutorials>();
+            List<TutorialList> tutorial = new List<TutorialList>();
             string constring = ConfigurationManager.ConnectionStrings["TutorialsContext"].ConnectionString;
             using (SqlConnection con = new SqlConnection(constring))
             {
@@ -65,19 +73,26 @@ namespace Pentagon.Controllers
                 SqlDataReader reader = command.ExecuteReader();
                 if (reader == null)
                 {
+                    if (command != null)
+                        command.Dispose();
+                    if (command != null)
+                        con.Dispose();
                     return Json("null", JsonRequestBehavior.AllowGet);
                 }
                 while (reader.Read())
                 {
 
-                    Tutorials t = new Tutorials()
+                    TutorialList t = new TutorialList()
                     {
-                        UserID = (int)reader["UserID"],
                         TutorialID = (int)reader["TutorialID"],
-                        TutorialTitle = (string)reader["TutorialTitle"]
+                        TutorialTitle = (string)reader["TutorialTitle"],
                     };
                     tutorial.Add(t);
                 }
+                if (command != null)
+                    command.Dispose();
+                if (command != null)
+                    con.Dispose();
                 return Json(tutorial, JsonRequestBehavior.AllowGet);
             }
         }
@@ -86,7 +101,7 @@ namespace Pentagon.Controllers
         [HttpGet]
         public ActionResult ListOfChapter(int tutorialid)
         {
-            Dictionary<int, string> chapters = new Dictionary<int, string>();
+            List<ChaptersList> chapters = new List<ChaptersList>();
             string constring = ConfigurationManager.ConnectionStrings["TutorialsContext"].ConnectionString;
             using (SqlConnection con = new SqlConnection(constring))
             {
@@ -100,26 +115,35 @@ namespace Pentagon.Controllers
                 SqlDataReader reader = command.ExecuteReader();
                 if (reader == null)
                 {
+                    if (command != null)
+                        command.Dispose();
+                    if (command != null)
+                        con.Dispose();
                     return Json("null", JsonRequestBehavior.AllowGet);
                 }
                 while (reader.Read())
                 {
-                    int chapterID = (int)reader["ChapterID"];
-                    string chapterName = (string)reader["ChapterName"];
-                    chapters.Add(chapterID, chapterName);
-
+                    ChaptersList c = new ChaptersList()
+                    {
+                        ChapterID = (int)reader["ChapterID"],
+                        ChapterName = (string)reader["ChapterName"],
+                    };
+                    chapters.Add(c);
                 }
+                if (command != null)
+                    command.Dispose();
+                if (command != null)
+                    con.Dispose();
                 return Json(chapters, JsonRequestBehavior.AllowGet);
             }
         }
-
 
 
         [Route("site/contentofchapter")]
         [HttpGet]
         public ActionResult ContentOfChapter(int chapterid)
         {
-            List<Chapters> chapters = new List<Chapters>();
+            List<ChapterContent> chapters = new List<ChapterContent>();
             string constring = ConfigurationManager.ConnectionStrings["TutorialsContext"].ConnectionString;
             using (SqlConnection con = new SqlConnection(constring))
             {
@@ -133,15 +157,17 @@ namespace Pentagon.Controllers
                 SqlDataReader reader = command.ExecuteReader();
                 if (reader == null)
                 {
+                    if (command != null)
+                        command.Dispose();
+                    if (command != null)
+                        con.Dispose();
                     return Json("null", JsonRequestBehavior.AllowGet);
                 }
                 while (reader.Read())
                 {
 
-                    Chapters c = new Chapters()
+                    ChapterContent c = new ChapterContent()
                     {
-                        ChapterID = (int)reader["ChapterID"],
-                        HierarchyLevel = (int)reader["HierarchyLevel"],
                         ChapterName = (string)reader["ChapterName"],
                         Description = (string)reader["Description"],
                         TypeOfFile = (int)reader["TypeOfFile"],
@@ -149,6 +175,10 @@ namespace Pentagon.Controllers
                     };
                     chapters.Add(c);
                 }
+                if (command != null)
+                    command.Dispose();
+                if (command != null)
+                    con.Dispose();
                 return Json(chapters, JsonRequestBehavior.AllowGet);
             }
         }
@@ -172,6 +202,10 @@ namespace Pentagon.Controllers
                 command.Parameters.AddWithValue("@fc", chapter.FileContents);
                 con.Open();
                 int id = (int)command.ExecuteScalar();
+                if (command != null)
+                    command.Dispose();
+                if (command != null)
+                    con.Dispose();
                 return Json(id, JsonRequestBehavior.AllowGet);
             }
 
@@ -193,12 +227,17 @@ namespace Pentagon.Controllers
                 int id = (int)command.ExecuteScalar();
                 if (id == 0)
                 {
+                    if (command != null)
+                        command.Dispose();
+                    if (command != null)
+                        con.Dispose();
                     return Json(false, JsonRequestBehavior.AllowGet);
                 }
-                else
-                {
-                    return Json(id, JsonRequestBehavior.AllowGet);
-                }
+                if (command != null)
+                    command.Dispose();
+                if (command != null)
+                    con.Dispose();
+                return Json(id, JsonRequestBehavior.AllowGet);
             }
         }
     }
