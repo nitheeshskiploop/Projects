@@ -1,11 +1,15 @@
-﻿using Pentagon.Models;
-using System;
+﻿/* 
+ * Site Controller     *
+ * Created By Nitheesh *
+ *                     * 
+ */
+
+
+
+using Pentagon.Models;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Pentagon.Controllers
