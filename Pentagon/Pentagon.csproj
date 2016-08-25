@@ -161,6 +161,7 @@
     <Content Include="Views\Site\ListOfChapter.cshtml" />
     <Content Include="Views\Site\ContentOfChapter.cshtml" />
     <Content Include="Views\Site\ui.cshtml" />
+    <Content Include="Views\Site\TutorialApp.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

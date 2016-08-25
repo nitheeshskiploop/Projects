@@ -13,6 +13,11 @@ namespace Pentagon.Controllers
     public class SiteController : Controller
     {
         [Route("")]
+        public ActionResult TutorialApp()
+        {
+            return View();
+        }
+
         [Route("site")]
         [Route("site/login")]
         [HttpGet]
