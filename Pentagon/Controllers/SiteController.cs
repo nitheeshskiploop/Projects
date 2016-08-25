@@ -15,7 +15,7 @@ namespace Pentagon.Controllers
         [Route("")]
         public ActionResult TutorialApp()
         {
-            return View();
+            return View("index");
         }
 
         [Route("site")]
@@ -45,7 +45,7 @@ namespace Pentagon.Controllers
                         command.Dispose();
                     if (command != null)
                         con.Dispose();
-                    return View("Login", null);
+                    return Json(0,JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
@@ -54,7 +54,8 @@ namespace Pentagon.Controllers
                         command.Dispose();
                     if (command != null)
                         con.Dispose();
-                    return View("Login", login);
+                    return Json(login.UserID, JsonRequestBehavior.AllowGet);
+
                 }
             }
         }
