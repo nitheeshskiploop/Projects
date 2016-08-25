@@ -4,6 +4,7 @@
 
 (function () {
     'use strict';
+    var uid, tid;
     var app = angular.module('tutorialApp', ['routes'])
 
         .controller('loginCtrl', function ($scope, $http, $location) {
@@ -12,25 +13,31 @@
             $scope.loginerror = false;
             $scope.login = function () {
                 $scope.loginerror = false;
-                $http.get('/site/login', {params : {username : $scope.username, password : $scope.password}})
+                $http.get('/site/login', { params: { username: $scope.username, password: $scope.password } })
                     .then(function (userid) {
                         console.log(userid.data);
-                        if(userid.data)
-                        {
-                            $scope.uid = userid.data;
+                        if (userid.data) {
+                            uid = userid.data;
                             $location.path('panel');
                         }
                         else $scope.loginerror = true;
-                    },function (data) {
+                    }, function (data) {
                         console.log("Error");
                     });
             };
         })
 
-        .controller('panelCtrl', function ($scope) {
+        .controller('panelCtrl', function ($scope, $http, $location) {
             $scope.name = "";
             $scope.showModal = false;
-            $scope.courses = ['C Basics', 'C++ Concepts', 'Java Programming', 'Android App Development', 'HTML5', 'CSS3', 'JQuery', 'Angular JS', 'Bootstrap', 'Knockout JS', 'Node JS', 'INK Framework', 'Materialize CSS'];
+            //  $scope.courses = ['C Basics', 'C++ Concepts', 'Java Programming', 'Android App Development', 'HTML5', 'CSS3', 'JQuery', 'Angular JS', 'Bootstrap', 'Knockout JS', 'Node JS', 'INK Framework', 'Materialize CSS'];
+            $scope.courses = ['Loading..'];
+
+            $http.get('site/listofcourses?userid=' + uid)
+            .then(function (data) {
+                $scope.courses = data.data;
+            });
+
             $scope.addCourse = function () {
                 if ($scope.name != '')
                     $scope.courses.push($scope.name);
@@ -39,20 +46,33 @@
             }
             $scope.deleteCourse = function (index) {
                 $scope.courses.splice(index, 1);
-            }
+            };
+
+            $scope.setCourseId = function (index) {
+                tid = index + 1;
+                $location.path('chapters');
+            };
         })
 
-        .controller('chapterCtrl', function ($scope) {
-            $scope.list = ['Preface', 'Introduction', 'Data Types', 'Functions', 'Object Orientation']
-            $scope.desc = ['C is a general-purpose, procedural, imperative computer programming language developed in 1972 by Dennis M. Ritchie at the Bell Telephone Laboratories to develop the UNIX operating system. C is the most widely used computer language. It keeps fluctuating at number one scale of popularity along with Java programming language, which is also equally popular and most widely used among modern software programmers.'];
-
+        .controller('chapterCtrl', function ($scope, $http) {
+            //$scope.list = ['Preface', 'Introduction', 'Data Types', 'Functions', 'Object Orientation']
+            $scope.chapters = [];
+            $scope.cid = 0;
             $scope.isViewEnabled = true;
-            $scope.url = 'https://www.youtube.com/watch?v=yET4p-r2TI8';
-            
-            $scope.toggleEditView = function () {
-                $scope.isViewEnabled = ! $scope.isViewEnabled;
-            }
 
-        })
+            $scope.toggleEditView = function () {
+                $scope.isViewEnabled = !$scope.isViewEnabled;
+            };
+
+            $http.get('site/getchapters?tutorialid=' + tid)
+            .then(function (data) {
+                $scope.chapters = data.data;
+            });
+
+            $scope.setCid = function (index) {
+                $scope.cid = index;
+            };
+
+        });
 
 })();

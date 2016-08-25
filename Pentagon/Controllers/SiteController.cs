@@ -107,7 +107,7 @@ namespace Pentagon.Controllers
             }
         }
 
-        [Route("site/listofchapters")]
+        [Route("site/getchapters")]
         [HttpGet]
         public ActionResult ListOfChapter(int tutorialid)
         {
@@ -149,7 +149,7 @@ namespace Pentagon.Controllers
         }
 
 
-        [Route("site/contentofchapter")]
+        [Route("site/chapterscontent")]
         [HttpGet]
         public ActionResult ContentOfChapter(int chapterid)
         {
@@ -160,6 +160,8 @@ namespace Pentagon.Controllers
                 SqlCommand command = new SqlCommand();
                 command.CommandText = "select * from Chapters Where ChapterID=@ChapterID";
                 command.Parameters.AddWithValue("@ChapterID", chapterid);
+                //command.CommandText = "select * from Chapters Where TutorialID=@TutorialID";
+                //command.Parameters.AddWithValue("@TutorialID", tutorialid);
                 command.Connection = con;
 
                 con.Open();

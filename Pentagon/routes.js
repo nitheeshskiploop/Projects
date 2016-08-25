@@ -12,7 +12,7 @@ route.config(function ($routeProvider) {
         .when("/panel", {
             templateUrl: "templates/controlpanel.html"
         })
-        .when("/chapter", {
+        .when("/chapters", {
             templateUrl: "templates/chapter.html"
         })
         .otherwise({redirectTo :'/'});
