@@ -22,6 +22,8 @@ namespace Pentagon.Controllers
             return View("index");
         }
 
+
+        /* Function to Login */
         [Route("site")]
         [Route("site/login")]
         [HttpGet]
@@ -64,9 +66,11 @@ namespace Pentagon.Controllers
             }
         }
 
+
+
+        /* Function to return list of courses/tutorials as json object*/
         [Route("site/listofcourses")]
         [HttpGet]
-
         public ActionResult ListOfCourses(int userid)
         {
             List<TutorialList> tutorial = new List<TutorialList>();
@@ -107,7 +111,9 @@ namespace Pentagon.Controllers
             }
         }
 
-        [Route("site/getchapters")]
+
+        /*Function to return list of chapters as json object*/
+        [Route("site/listofchapters")]
         [HttpGet]
         public ActionResult ListOfChapter(int tutorialid)
         {
@@ -148,7 +154,7 @@ namespace Pentagon.Controllers
             }
         }
 
-
+        /*Function to return content of chapters as json object*/
         [Route("site/chapterscontent")]
         [HttpGet]
         public ActionResult ContentOfChapter(int chapterid)
@@ -195,7 +201,7 @@ namespace Pentagon.Controllers
             }
         }
 
-
+        /*Function to insert new chapters as json object*/
         [Route("site/addnewchapter")]
         [HttpGet]
         public ActionResult AddNewChapter(Chapters chapter)
@@ -223,6 +229,7 @@ namespace Pentagon.Controllers
 
         }
 
+        /*Function to insert new Course/tutorial as json object*/
         [Route("site/addnewcourse")]
         [HttpGet]
         public ActionResult AddNewCourse(Tutorials tutorial)
@@ -250,6 +257,59 @@ namespace Pentagon.Controllers
                 if (command != null)
                     con.Dispose();
                 return Json(id, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+
+
+
+
+        /*temp function to return chapter object from database Delete this function later*/
+
+        [Route("site/getchapters")]
+        [HttpGet]
+        public ActionResult GetChapter(int tutorialid)
+        {
+            List<Chapters> chapters = new List<Chapters>();
+            string constring = ConfigurationManager.ConnectionStrings["TutorialsContext"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(constring))
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandText = "select * from Chapters Where TutorialID=@TutorialID";
+                command.Parameters.AddWithValue("@TutorialID", tutorialid);
+                command.Connection = con;
+
+                con.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader == null)
+                {
+                    if (command != null)
+                        command.Dispose();
+                    if (command != null)
+                        con.Dispose();
+                    return Json("null", JsonRequestBehavior.AllowGet);
+                }
+                while (reader.Read())
+                {
+                    Chapters c = new Chapters()
+                    {
+                        ChapterID = (int)reader["ChapterID"],
+                        TutorialID = (int)reader["TutorialID"],
+                        HierarchyLevel = (int)reader["HierarchyLevel"],
+                        ChapterName = (string)reader["ChapterName"],
+                        Description = (string)reader["Description"],
+                        TypeOfFile = (int)reader["TypeOfFile"],
+                        FileContents = (string)reader["FileContents"],
+                    };
+                    chapters.Add(c);
+                }
+                if (command != null)
+                    command.Dispose();
+                if (command != null)
+                    con.Dispose();
+                return Json(chapters, JsonRequestBehavior.AllowGet);
             }
         }
     }
