@@ -303,3 +303,13 @@ select {
     text-align: center;
     margin-top: 5px;
 }
+
+.addchapter {
+    float:right;
+    color: #c1c1b4;
+    cursor: pointer;
+}
+
+.addchapter:hover {
+    color:#9c9c93;
+}

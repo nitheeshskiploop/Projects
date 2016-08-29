@@ -154,111 +154,111 @@ namespace Pentagon.Controllers
             }
         }
 
-        /*Function to return content of chapters as json object*/
-        [Route("site/chapterscontent")]
-        [HttpGet]
-        public ActionResult ContentOfChapter(int chapterid)
-        {
-            List<ChapterContent> chapters = new List<ChapterContent>();
-            string constring = ConfigurationManager.ConnectionStrings["TutorialsContext"].ConnectionString;
-            using (SqlConnection con = new SqlConnection(constring))
-            {
-                SqlCommand command = new SqlCommand();
-                command.CommandText = "select * from Chapters Where ChapterID=@ChapterID";
-                command.Parameters.AddWithValue("@ChapterID", chapterid);
-                //command.CommandText = "select * from Chapters Where TutorialID=@TutorialID";
-                //command.Parameters.AddWithValue("@TutorialID", tutorialid);
-                command.Connection = con;
+        ///*Function to return content of chapters as json object*/
+        //[Route("site/chapterscontent")]
+        //[HttpGet]
+        //public ActionResult ContentOfChapter(int chapterid)
+        //{
+        //    List<ChapterContent> chapters = new List<ChapterContent>();
+        //    string constring = ConfigurationManager.ConnectionStrings["TutorialsContext"].ConnectionString;
+        //    using (SqlConnection con = new SqlConnection(constring))
+        //    {
+        //        SqlCommand command = new SqlCommand();
+        //        command.CommandText = "select * from Chapters Where ChapterID=@ChapterID";
+        //        command.Parameters.AddWithValue("@ChapterID", chapterid);
+        //        //command.CommandText = "select * from Chapters Where TutorialID=@TutorialID";
+        //        //command.Parameters.AddWithValue("@TutorialID", tutorialid);
+        //        command.Connection = con;
 
-                con.Open();
+        //        con.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
-                if (reader == null)
-                {
-                    if (command != null)
-                        command.Dispose();
-                    if (command != null)
-                        con.Dispose();
-                    return Json("null", JsonRequestBehavior.AllowGet);
-                }
-                while (reader.Read())
-                {
+        //        SqlDataReader reader = command.ExecuteReader();
+        //        if (reader == null)
+        //        {
+        //            if (command != null)
+        //                command.Dispose();
+        //            if (command != null)
+        //                con.Dispose();
+        //            return Json("null", JsonRequestBehavior.AllowGet);
+        //        }
+        //        while (reader.Read())
+        //        {
 
-                    ChapterContent c = new ChapterContent()
-                    {
-                        ChapterName = (string)reader["ChapterName"],
-                        Description = (string)reader["Description"],
-                        TypeOfFile = (int)reader["TypeOfFile"],
-                        FileContents = (string)reader["FileContents"],
-                    };
-                    chapters.Add(c);
-                }
-                if (command != null)
-                    command.Dispose();
-                if (command != null)
-                    con.Dispose();
-                return Json(chapters, JsonRequestBehavior.AllowGet);
-            }
-        }
+        //            ChapterContent c = new ChapterContent()
+        //            {
+        //                ChapterName = (string)reader["ChapterName"],
+        //                Description = (string)reader["Description"],
+        //                TypeOfFile = (int)reader["TypeOfFile"],
+        //                FileContents = (string)reader["FileContents"],
+        //            };
+        //            chapters.Add(c);
+        //        }
+        //        if (command != null)
+        //            command.Dispose();
+        //        if (command != null)
+        //            con.Dispose();
+        //        return Json(chapters, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
 
-        /*Function to insert new chapters as json object*/
-        [Route("site/addnewchapter")]
-        [HttpGet]
-        public ActionResult AddNewChapter(Chapters chapter)
-        {
-            string constring = ConfigurationManager.ConnectionStrings["TutorialsContext"].ConnectionString;
-            using (SqlConnection con = new SqlConnection(constring))
-            {
-                SqlCommand command = new SqlCommand();
-                command.CommandText = "insert into Chapters values(@ti,@hl,@cn,@d,@tf,@fc);select CAST(scope_identity() as int)";
-                command.Connection = con;
-                command.Parameters.AddWithValue("@cn", chapter.ChapterName);
-                command.Parameters.AddWithValue("@hl", chapter.HierarchyLevel);
-                command.Parameters.AddWithValue("@ti", chapter.TutorialID);
-                command.Parameters.AddWithValue("@d", chapter.Description);
-                command.Parameters.AddWithValue("@tf", chapter.TypeOfFile);
-                command.Parameters.AddWithValue("@fc", chapter.FileContents);
-                con.Open();
-                int id = (int)command.ExecuteScalar();
-                if (command != null)
-                    command.Dispose();
-                if (command != null)
-                    con.Dispose();
-                return Json(id, JsonRequestBehavior.AllowGet);
-            }
+        ///*Function to insert new chapters as json object*/
+        //[Route("site/addnewchapter")]
+        //[HttpGet]
+        //public ActionResult AddNewChapter(Chapters chapter)
+        //{
+        //    string constring = ConfigurationManager.ConnectionStrings["TutorialsContext"].ConnectionString;
+        //    using (SqlConnection con = new SqlConnection(constring))
+        //    {
+        //        SqlCommand command = new SqlCommand();
+        //        command.CommandText = "insert into Chapters values(@ti,@hl,@cn,@d,@tf,@fc);select CAST(scope_identity() as int)";
+        //        command.Connection = con;
+        //        command.Parameters.AddWithValue("@cn", chapter.ChapterName);
+        //        command.Parameters.AddWithValue("@hl", chapter.HierarchyLevel);
+        //        command.Parameters.AddWithValue("@ti", chapter.TutorialID);
+        //        command.Parameters.AddWithValue("@d", chapter.Description);
+        //        command.Parameters.AddWithValue("@tf", chapter.TypeOfFile);
+        //        command.Parameters.AddWithValue("@fc", chapter.FileContents);
+        //        con.Open();
+        //        int id = (int)command.ExecuteScalar();
+        //        if (command != null)
+        //            command.Dispose();
+        //        if (command != null)
+        //            con.Dispose();
+        //        return Json(id, JsonRequestBehavior.AllowGet);
+        //    }
 
-        }
+        //}
 
-        /*Function to insert new Course/tutorial as json object*/
-        [Route("site/addnewcourse")]
-        [HttpGet]
-        public ActionResult AddNewCourse(Tutorials tutorial)
-        {
-            string constring = ConfigurationManager.ConnectionStrings["TutorialsContext"].ConnectionString;
-            using (SqlConnection con = new SqlConnection(constring))
-            {
-                SqlCommand command = new SqlCommand();
-                command.CommandText = "insert into Tutorials values();select CAST(scope_identity() as int)";
-                command.Connection = con;
-                command.Parameters.AddWithValue("@ui", tutorial.UserID);
-                command.Parameters.AddWithValue("@tt", tutorial.TutorialTitle);
-                con.Open();
-                int id = (int)command.ExecuteScalar();
-                if (id == 0)
-                {
-                    if (command != null)
-                        command.Dispose();
-                    if (command != null)
-                        con.Dispose();
-                    return Json(false, JsonRequestBehavior.AllowGet);
-                }
-                if (command != null)
-                    command.Dispose();
-                if (command != null)
-                    con.Dispose();
-                return Json(id, JsonRequestBehavior.AllowGet);
-            }
-        }
+        ///*Function to insert new Course/tutorial as json object*/
+        //[Route("site/addnewcourse")]
+        //[HttpGet]
+        //public ActionResult AddNewCourse(Tutorials tutorial)
+        //{
+        //    string constring = ConfigurationManager.ConnectionStrings["TutorialsContext"].ConnectionString;
+        //    using (SqlConnection con = new SqlConnection(constring))
+        //    {
+        //        SqlCommand command = new SqlCommand();
+        //        command.CommandText = "insert into Tutorials values();select CAST(scope_identity() as int)";
+        //        command.Connection = con;
+        //        command.Parameters.AddWithValue("@ui", tutorial.UserID);
+        //        command.Parameters.AddWithValue("@tt", tutorial.TutorialTitle);
+        //        con.Open();
+        //        int id = (int)command.ExecuteScalar();
+        //        if (id == 0)
+        //        {
+        //            if (command != null)
+        //                command.Dispose();
+        //            if (command != null)
+        //                con.Dispose();
+        //            return Json(false, JsonRequestBehavior.AllowGet);
+        //        }
+        //        if (command != null)
+        //            command.Dispose();
+        //        if (command != null)
+        //            con.Dispose();
+        //        return Json(id, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
 
 
 
@@ -311,6 +311,105 @@ namespace Pentagon.Controllers
                     con.Dispose();
                 return Json(chapters, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        /*Function to Add new chapters*/
+        [Route("site/addchapter")]
+        [HttpGet]
+        public ActionResult AddNewChapter(int tid, string chaptername)
+        {
+            Chapters c = new Chapters()
+            {
+                TutorialID = tid,
+                ChapterName = chaptername,
+                Description = "Description",
+                TypeOfFile = 1,
+                FileContents = "url",
+                HierarchyLevel = 1,
+
+            };
+            string constring = ConfigurationManager.ConnectionStrings["TutorialsContext"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(constring))
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandText = "insert into Chapters values(@ti,@hl,@cn,@d,@tf,@fc);select CAST(scope_identity() as int)";
+                command.Connection = con;
+                command.Parameters.AddWithValue("@cn", c.ChapterName);
+                command.Parameters.AddWithValue("@hl", c.HierarchyLevel);
+                command.Parameters.AddWithValue("@ti", c.TutorialID);
+                command.Parameters.AddWithValue("@d", c.Description);
+                command.Parameters.AddWithValue("@tf", c.TypeOfFile);
+                command.Parameters.AddWithValue("@fc", c.FileContents);
+                con.Open();
+                int id = (int)command.ExecuteScalar();
+                if (command != null)
+                    command.Dispose();
+                if (command != null)
+                    con.Dispose();
+                c.ChapterID = id;
+                return Json(c, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /*function to add new tutorial */
+        [Route("site/addtutorial")]
+        [HttpPost]
+        public ActionResult AddNewCourses(int uid,string tutorialname)
+        {
+            string constring = ConfigurationManager.ConnectionStrings["TutorialsContext"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(constring))
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandText = "insert into Tutorials values(@ui,@tt);select CAST(scope_identity() as int)";
+                command.Connection = con;
+                command.Parameters.AddWithValue("@ui", uid);
+                command.Parameters.AddWithValue("@tt", tutorialname);
+                con.Open();
+                int id = (int)command.ExecuteScalar();
+                if (id == 0)
+                {
+                    if (command != null)
+                        command.Dispose();
+                    if (command != null)
+                        con.Dispose();
+                    return Json(false, JsonRequestBehavior.AllowGet);
+                }
+                if (command != null)
+                    command.Dispose();
+                if (command != null)
+                    con.Dispose();
+                return Json(id, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        /*Function to update chapter */
+        [Route("site/updatechapter")]
+        [HttpGet]
+        public ActionResult UpdateChapter(Chapters c)
+        {
+            string constring = ConfigurationManager.ConnectionStrings["TutorialsContext"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(constring))
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandText = "UPDATE Chapters SET ChapterName = @cn,HierarchyLevel = @hl,Description = @d ,TypeOfFile = tf,FileContents = @fc where ChapterID = @ci and TutorialID = @ti)";
+                command.Connection = con;
+                command.Parameters.AddWithValue("@cn", c.ChapterName);
+                command.Parameters.AddWithValue("@hl", c.HierarchyLevel);
+                command.Parameters.AddWithValue("@ti", c.TutorialID);
+                command.Parameters.AddWithValue("@d", c.Description);
+                command.Parameters.AddWithValue("@tf", c.TypeOfFile);
+                command.Parameters.AddWithValue("@fc", c.FileContents);
+                command.Parameters.AddWithValue("@ci", c.ChapterID);
+                con.Open();
+                int id = (int)command.ExecuteScalar();
+                if (command != null)
+                    command.Dispose();
+                if (command != null)
+                    con.Dispose();
+                c.ChapterID = id;
+            }
+            return Json(c.ChapterID, JsonRequestBehavior.AllowGet);
         }
     }
 }

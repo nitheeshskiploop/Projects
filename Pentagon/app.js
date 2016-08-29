@@ -38,9 +38,14 @@
                 $scope.courses = data.data;
             });
 
-            $scope.addCourse = function () {
-                if ($scope.name != '')
-                    $scope.courses.push($scope.name);
+            $scope.addTutorial = function () {
+                if ($scope.name != '') {
+                    $scope.showModal = false;
+                    $http.post('site/addtutorial?uid=' + uid + '&tutorialname=' + $scope.name)
+                    .then(function (data) {
+                        $scope.courses.push(data.data);
+                    });
+                }
                 $scope.showModal = false;
                 $scope.name = "";
             }
@@ -49,7 +54,7 @@
             };
 
             $scope.setCourseId = function (index) {
-                tid = index + 1;
+                tid = index;
                 $location.path('chapters');
             };
         })
@@ -57,10 +62,15 @@
         .controller('chapterCtrl', function ($scope, $http) {
             //$scope.list = ['Preface', 'Introduction', 'Data Types', 'Functions', 'Object Orientation']
             $scope.chapters = [];
+            $scope.name = '';
             $scope.cid = 0;
             $scope.isViewEnabled = true;
+            $scope.showModal = false;
 
             $scope.toggleEditView = function () {
+
+                if ($scope.isViewEnabled == false)
+                    $http.post('site/updatechapter', $scope.chapters[$scope.cid]);
                 $scope.isViewEnabled = !$scope.isViewEnabled;
             };
 
@@ -72,6 +82,19 @@
             $scope.setCid = function (index) {
                 $scope.cid = index;
             };
+
+            $scope.addChapter = function () {
+                if ($scope.name != '')
+                {
+                    $scope.showModal = false;
+                    $http.get('site/addchapter?tid=' + tid + '&chaptername=' + $scope.name)
+                    .then(function (data) {
+                        $scope.chapters.push(data.data);
+                    });
+                }
+                $scope.showModal = false;
+                $scope.name = "";
+            }
 
         });
 

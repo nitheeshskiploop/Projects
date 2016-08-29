@@ -9,10 +9,10 @@
     </div>
     <div class="col-lg-3 col-lg-push-1">
         <div class="card">
-            <div class="h1 indexTitle">Index</div>
+            <div class="h1 indexTitle">Index <i class="fa fa-plus-square addchapter" ng-click="showModal=true"></i></div>
             <div ng-repeat="chapter in chapters">
                 <hr>
-                <div class="chapterName" ng-click="setCid($index)"><i class="fa fa-chevron-circle-right"></i> {{chapter.ChapterName}}</div>
+                <div class="chapterName" ng-click="setCid(chapter.ChapterID)"><i class="fa fa-chevron-circle-right"></i> {{chapter.ChapterName}}</div>
             </div>
         </div>
     </div>
@@ -42,17 +42,30 @@
     <div class="col-lg-10 col-lg-push-1">
         <div class="card">
             <div class="link" ng-show="isViewEnabled"><i class="fa fa-youtube-square"></i> <a
-                    href="{{chapters[cid].FileContent}}"
-                    target="_new">{{chapters[cid].FileContent}}</a>
+                    href="{{chapters[cid].FileContents}}"
+                    target="_new">{{chapters[cid].FileContents}}</a>
             </div>
 
             <div style="display: flex" ng-hide="isViewEnabled">
-                <input type="text" placeholder="URL" ng-model="chapters[cid].FileContent"/> &nbsp;
-                <select name="" id="" ng-model="chapters[cid].FileType">
+                <input type="text" placeholder="URL" ng-model="chapters[cid].FileContents"/> &nbsp;
+                <select name="" id="" ng-model="chapters[cid].TypeOfFile">
                     <option disabled selected>Type</option>
-                    <option value="youtube">Youtube</option>
-                    <option value="pdf">PDF</option>
+                    <option value="1">Youtube</option>
+                    <option value="2">PDF</option>
                 </select>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mymodal mymodal-content" ng-show="showModal">
+        <div class="col-lg-4 col-lg-push-4">
+            <div class="card modal-card">
+                <div class="close-modal h1" ng-click="showModal=false">&times;</div>
+                <div class="course-title h1">Add New Chapter</div>
+                <hr>
+                <input type="text" placeholder="Chapter Name" ng-model="name">
+                <button class="btn-outline" ng-click="addChapter()"><i class="fa fa-check-circle"></i> Submit</button>
             </div>
         </div>
     </div>
